@@ -10,7 +10,8 @@
           <li class="nav-item">
             <!-- Add "active" class when you're on that page" -->
             <!-- <a class="nav-link active" href="">Home</a> -->
-            <nuxt-link class="nav-link active" to="/">Home</nuxt-link>
+            <!-- exact 属性，指的是精确匹配 -->
+            <nuxt-link class="nav-link" to="/" exact>Home</nuxt-link>
           </li>
           <li class="nav-item">
             <!-- <a class="nav-link" href="">
