@@ -8,7 +8,9 @@
           </h1>
           <p class="text-xs-center">
             <!-- <a href="">Have an account?</a> -->
-            <nuxt-link v-if="isLogin" to="/register">Need an account?</nuxt-link>
+            <nuxt-link v-if="isLogin" to="/register"
+              >Need an account?</nuxt-link
+            >
             <nuxt-link v-else to="/login">Have an account?</nuxt-link>
           </p>
 
@@ -16,7 +18,7 @@
             <li>That email is already taken</li>
           </ul>
 
-          <form>
+          <form @submit.prevent="onSubmit">
             <fieldset v-if="!isLogin" class="form-group">
               <input
                 class="form-control form-control-lg"
@@ -26,6 +28,7 @@
             </fieldset>
             <fieldset class="form-group">
               <input
+                v-model="user.email"
                 class="form-control form-control-lg"
                 type="text"
                 placeholder="Email"
@@ -33,6 +36,7 @@
             </fieldset>
             <fieldset class="form-group">
               <input
+                v-model="user.password"
                 class="form-control form-control-lg"
                 type="password"
                 placeholder="Password"
@@ -49,11 +53,39 @@
 </template>
 
 <script>
+import request from '@/utils/request'
+
 export default {
   name: 'LoginIndex',
   computed: {
     isLogin() {
       return this.$route.name === 'login'
+    },
+  },
+  data() {
+    return {
+      user: {
+        email: '',
+        password: '',
+      },
+    }
+  },
+  methods: {
+    async onSubmit() {
+      // 提交表单请求登录
+      const { data } = await request({
+        method: 'POST',
+        url: '/api/users/login',
+        data: {
+          user: this.user
+        }
+      })
+
+      console.log(data)
+      // TODO: 保存用户的登陆状态
+
+      // 跳转到首页
+      this.$router.push("/")
     },
   },
 }
