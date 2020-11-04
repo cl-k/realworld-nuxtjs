@@ -1,0 +1,20 @@
+{
+  "name": "realworld-nuxtjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nuxt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cl-k/realworld-nuxtjs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cl-k/realworld-nuxtjs/issues"
+  },
+  "homepage": "https://github.com/cl-k/realworld-nuxtjs#readme"
+}
