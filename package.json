@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/cl-k/realworld-nuxtjs/issues"
   },
-  "homepage": "https://github.com/cl-k/realworld-nuxtjs#readme"
+  "homepage": "https://github.com/cl-k/realworld-nuxtjs#readme",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "nuxt": "^2.14.7"
+  }
 }
