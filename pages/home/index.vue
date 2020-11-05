@@ -98,7 +98,7 @@
                   class="page-link"
                   :to="{
                     name: 'home',
-                    query: { page: item, tag: $route.query.tag },
+                    query: { page: item, tag: $route.query.tag, tab: tab },
                   }"
                   >{{ item }}</nuxt-link
                 >
@@ -130,19 +130,21 @@
 </template>
 
 <script>
-import { getArticles } from '@/api/article'
+import { getArticles, getFeedArticles } from '@/api/article'
 import { getTags } from '@/api/tag'
 import { mapState } from 'vuex'
 
 export default {
   name: 'HomeIndex',
-  async asyncData({ query }) {
+  async asyncData({ query, store }) {
     const page = Number.parseInt(query.page || 1)
     const limit = 20
     const { tag } = query
+    const tab = query.tab || 'global_feed'
+    const loadArticles = store.state.user && tab === 'your_feed' ? getFeedArticles : getArticles
 
     const [articlesRes, tagRes] = await Promise.all([
-      getArticles({
+      loadArticles({
         limit,
         offset: (page - 1) * limit,
         tag,
