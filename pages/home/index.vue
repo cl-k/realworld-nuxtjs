@@ -12,11 +12,14 @@
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li class="nav-item">
+              <li v-if="user" class="nav-item">
                 <a class="nav-link disabled" href="">Your Feed</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="">Global Feed</a>
+              </li>
+              <li v-if="tag" class="nav-item">
+                <a class="nav-link" href="">#{{ tag }}</a>
               </li>
             </ul>
           </div>
@@ -75,7 +78,10 @@
               >
                 <nuxt-link
                   class="page-link"
-                  :to="{ name: 'home', query: { page: item, tag: $route.query.tag } }"
+                  :to="{
+                    name: 'home',
+                    query: { page: item, tag: $route.query.tag },
+                  }"
                   >{{ item }}</nuxt-link
                 >
               </li>
@@ -108,18 +114,20 @@
 <script>
 import { getArticles } from '@/api/article'
 import { getTags } from '@/api/tag'
+import { mapState } from 'vuex'
 
 export default {
   name: 'HomeIndex',
   async asyncData({ query }) {
     const page = Number.parseInt(query.page || 1)
     const limit = 20
+    const { tag } = query
 
     const [articlesRes, tagRes] = await Promise.all([
       getArticles({
         limit,
         offset: (page - 1) * limit,
-        tag: query.tag
+        tag,
       }),
       getTags(),
     ])
@@ -133,10 +141,12 @@ export default {
       tags,
       page,
       limit,
+      tag
     }
   },
   watchQuery: ['page', 'tag'], // 监听查询参数的变化
   computed: {
+    ...mapState(['user']),
     totalPage() {
       return Math.ceil(this.articlesCount / this.limit)
     },
