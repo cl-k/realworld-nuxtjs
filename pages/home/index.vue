@@ -89,7 +89,13 @@
             <p>Popular Tags</p>
 
             <div class="tag-list">
-              <a v-for="item in tags" :key="item" href="" class="tag-pill tag-default">{{ item }}</a>
+              <a
+                v-for="item in tags"
+                :key="item"
+                href=""
+                class="tag-pill tag-default"
+                >{{ item }}</a
+              >
             </div>
           </div>
         </div>
@@ -107,17 +113,22 @@ export default {
   async asyncData({ query }) {
     const page = Number.parseInt(query.page || 1)
     const limit = 20
-    const { data } = await getArticles({
-      limit,
-      offset: (page - 1) * limit,
-    })
 
-    const { data: tagData } = await getTags()
-    console.log(tagData)
+    const [ articlesRes, tagRes] = await Promise.all([
+      getArticles({
+        limit,
+        offset: (page - 1) * limit,
+      }),
+      getTags(),
+    ])
+
+    const { articles, articlesCount } = articlesRes.data
+    const { tags } = tagRes.data
+
     return {
-      articles: data.articles,
-      articlesCount: data.articlesCount,
-      tags: tagData.tags,
+      articles,
+      articlesCount,
+      tags,
       page,
       limit,
     }
