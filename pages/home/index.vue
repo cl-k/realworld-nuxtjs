@@ -75,7 +75,7 @@
               >
                 <nuxt-link
                   class="page-link"
-                  :to="{ name: 'home', query: { page: item } }"
+                  :to="{ name: 'home', query: { page: item, tag: $route.query.tag } }"
                   >{{ item }}</nuxt-link
                 >
               </li>
@@ -89,13 +89,14 @@
             <p>Popular Tags</p>
 
             <div class="tag-list">
-              <a
+              <nuxt-link
                 v-for="item in tags"
                 :key="item"
-                href=""
+                :to="{ name: 'home', query: { tag: item } }"
                 class="tag-pill tag-default"
-                >{{ item }}</a
               >
+                {{ item }}
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -114,10 +115,11 @@ export default {
     const page = Number.parseInt(query.page || 1)
     const limit = 20
 
-    const [ articlesRes, tagRes] = await Promise.all([
+    const [articlesRes, tagRes] = await Promise.all([
       getArticles({
         limit,
         offset: (page - 1) * limit,
+        tag: query.tag
       }),
       getTags(),
     ])
@@ -133,7 +135,7 @@ export default {
       limit,
     }
   },
-  watchQuery: ['page'], // 监听 page 查询参数的变化
+  watchQuery: ['page', 'tag'], // 监听查询参数的变化
   computed: {
     totalPage() {
       return Math.ceil(this.articlesCount / this.limit)
