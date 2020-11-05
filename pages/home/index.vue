@@ -92,7 +92,12 @@ import { getArticles } from '@/api/article'
 export default {
   name: 'HomeIndex',
   async asyncData() {
-    const { data } = await getArticles()
+    const page = 1
+    const limit = 10
+    const { data } = await getArticles({
+      limit,
+      offset: (page - 1) * limit
+    })
     return {
       articles: data.articles,
       articlesCount: data.articlesCount,
