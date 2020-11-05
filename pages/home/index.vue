@@ -13,13 +13,31 @@
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
               <li v-if="user" class="nav-item">
-                <a class="nav-link disabled" href="">Your Feed</a>
+                <nuxt-link
+                  class="nav-link"
+                  :class="{ active: tab === 'your_feed' }"
+                  exact
+                  :to="{ name: 'home', query: { tab: 'your_feed' } }"
+                  >Your Feed</nuxt-link
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="">Global Feed</a>
+                <nuxt-link
+                  class="nav-link"
+                  :class="{ active: tab === 'global_feed' }"
+                  exact
+                  :to="{ name: 'home', query: { tab: 'global_feed' } }"
+                  >Global Feed</nuxt-link
+                >
               </li>
               <li v-if="tag" class="nav-item">
-                <a class="nav-link" href="">#{{ tag }}</a>
+                <nuxt-link
+                  class="nav-link"
+                  :class="{ active: tab === 'tag' }"
+                  exact
+                  :to="{ name: 'home', query: { tab: 'tag', tag: tag } }"
+                  >#{{ tag }}</nuxt-link
+                >
               </li>
             </ul>
           </div>
@@ -98,7 +116,7 @@
               <nuxt-link
                 v-for="item in tags"
                 :key="item"
-                :to="{ name: 'home', query: { tag: item } }"
+                :to="{ name: 'home', query: { tab: 'tag', tag: item } }"
                 class="tag-pill tag-default"
               >
                 {{ item }}
@@ -141,10 +159,11 @@ export default {
       tags,
       page,
       limit,
-      tag
+      tag,
+      tab: query.tab || 'global_feed',
     }
   },
-  watchQuery: ['page', 'tag'], // 监听查询参数的变化
+  watchQuery: ['page', 'tag', 'tab'], // 监听查询参数的变化
   computed: {
     ...mapState(['user']),
     totalPage() {
