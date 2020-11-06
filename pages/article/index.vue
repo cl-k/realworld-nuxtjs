@@ -16,7 +16,7 @@
       <hr />
 
       <div class="article-actions">
-        <article-meta :article="article"/>
+        <article-meta :article="article" />
       </div>
 
       <div class="row">
@@ -106,8 +106,20 @@ export default {
     }
   },
   components: {
-    ArticleMeta
-  }
+    ArticleMeta,
+  },
+  head() {
+    return {
+      title: `${this.article.title} - RealWorld`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.article.description,
+        },
+      ],
+    }
+  },
 }
 </script>
 
